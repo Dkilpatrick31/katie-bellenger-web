@@ -1,4 +1,4 @@
-export type Mode = 'nutrition' | 'yoga'
+export type Mode = 'nutrition' | 'strength' | 'bundle'
 
 export type Program = {
   id: string
@@ -21,6 +21,7 @@ export type Palette = {
 
 export type ModeConfig = {
   label: string
+  eyebrow: string
   headline: string
   subtext: string
   cta: string
@@ -28,21 +29,25 @@ export type ModeConfig = {
   programs: Program[]
 }
 
+export const KATIE_BIO =
+  "I'm Katie — a certified nutritionist and strength coach who believes wellness should fit your actual life. I'm not here to put you on a diet or have you live in the gym. My philosophy is simple: work hard, play hard, and build habits that are genuinely sustainable. Whether your goal is weight loss, building strength, improving energy, or just feeling confident in your skin — I'll meet you where you are and build a plan around how you actually live. Real food. Real training. Real results."
+
 export const services: Record<Mode, ModeConfig> = {
   nutrition: {
     label: 'Nutrition',
-    headline: 'Nourish your body from the inside out.',
+    eyebrow: 'Certified Nutritionist',
+    headline: 'Nourish your body. Fuel your life.',
     subtext:
-      'Personalized meal plans, 1-on-1 coaching, and sustainable nutrition habits built around your life.',
+      'Sustainable eating habits built around your lifestyle — not a crash diet. Real food, real results, and a plan you\'ll actually stick to.',
     cta: 'Start My Nutrition Plan',
     palette: {
       bg: '#FAF8F4',
       accent: '#A8B5A0',
       highlight: '#8F6E5A',
-      text: '#2C2420',
+      text: '#2C2820',
       textMuted: '#7A6B62',
-      border: '#E8E0D8',
-      ctaBg: '#8F6E5A',
+      border: '#E8E3DA',
+      ctaBg: '#2C2820',
       ctaText: '#FAF8F4',
     },
     programs: [
@@ -50,7 +55,7 @@ export const services: Record<Mode, ModeConfig> = {
         id: '1-on-1-coaching',
         label: '1-on-1 Coaching',
         description:
-          'A fully personalized experience — weekly check-ins, custom meal plans, and ongoing support tailored to your goals.',
+          'A fully personalized experience with weekly check-ins, custom meal plans, and ongoing support tailored to your goals and lifestyle.',
         duration: '3 months',
         price: 'From $350/mo',
       },
@@ -58,77 +63,131 @@ export const services: Record<Mode, ModeConfig> = {
         id: 'custom-meal-plan',
         label: 'Custom Meal Plan',
         description:
-          'A detailed, flexible meal plan built around your preferences, lifestyle, and nutritional needs.',
+          'A detailed, flexible meal plan built around your preferences, dietary needs, and daily routine — no cookie-cutter templates.',
         duration: 'One-time',
         price: 'From $149',
       },
       {
-        id: 'group-program',
-        label: 'Group Program',
+        id: 'weight-loss-program',
+        label: 'Weight Loss Program',
         description:
-          'Learn alongside a small cohort — combines live workshops, shared meal guides, and community accountability.',
-        duration: '6 weeks',
-        price: 'From $97',
+          'A structured program combining nutrition strategy, habit tracking, and accountability to help you lose weight and keep it off for good.',
+        duration: '8 weeks',
+        price: 'From $249',
       },
       {
         id: 'free-consultation',
         label: 'Free Consultation',
         description:
-          'Not sure where to start? Book a free 20-minute call to explore which program fits your life.',
+          'Not sure where to start? Book a free 20-minute call to explore which program fits your life and goals — no pressure, no commitment.',
         duration: '20 min',
         price: 'Free',
       },
     ],
   },
 
-  yoga: {
-    label: 'Yoga',
-    headline: 'Find stillness. Build strength. Come home to yourself.',
+  strength: {
+    label: 'Strength',
+    eyebrow: 'Certified Strength Coach',
+    headline: 'Train hard. Recover smart. Live well.',
     subtext:
-      'Live and on-demand yoga classes for all levels — from gentle morning flow to dynamic vinyasa.',
-    cta: 'Join a Yoga Class',
+      'Work hard, play hard — and build a body that keeps up with your life. Progressive strength programming designed to burn fat, build muscle, and last long-term.',
+    cta: 'Build My Strength Plan',
     palette: {
-      bg: '#F5EAE8',
-      accent: '#C4B8D0',
-      highlight: '#C4998A',
-      text: '#2C1F1C',
-      textMuted: '#7A6068',
-      border: '#E8D8D4',
-      ctaBg: '#C4998A',
-      ctaText: '#F5EAE8',
+      bg: '#F4F4F2',
+      accent: '#4A6FA5',
+      highlight: '#2C3E50',
+      text: '#1A1A2E',
+      textMuted: '#5A6A7A',
+      border: '#D0D8E4',
+      ctaBg: '#1A1A2E',
+      ctaText: '#F4F4F2',
     },
     programs: [
       {
-        id: 'live-classes',
-        label: 'Live Classes',
+        id: 'personal-training',
+        label: 'Personal Training',
         description:
-          'Join Katie live — morning flows, evening wind-downs, and themed workshops streamed directly to you.',
+          'One-on-one sessions with Katie built around your schedule, your goals, and your body — available in-person or remote.',
         duration: 'Ongoing',
-        price: 'From $39/mo',
+        price: 'From $120/session',
       },
       {
-        id: 'on-demand-library',
-        label: 'On-Demand Library',
+        id: 'strength-program',
+        label: 'Strength Program',
         description:
-          'Access 100+ classes across all styles and lengths. Practice at your own pace, on your own schedule.',
-        duration: 'Anytime',
-        price: 'From $19/mo',
+          'A fully designed progressive training plan with video demos, tracking sheets, and weekly programming updates to keep you improving.',
+        duration: '12 weeks',
+        price: 'From $199',
       },
       {
-        id: 'private-sessions',
-        label: 'Private Sessions',
+        id: 'weight-loss-toning',
+        label: 'Weight Loss + Toning',
         description:
-          'One-on-one sessions focused on your body, your goals, and your practice — done your way.',
-        duration: '60 min',
-        price: 'From $120',
+          'Strategic programming that combines fat-burning circuits with strength work to reshape your body and boost your metabolism.',
+        duration: '8 weeks',
+        price: 'From $179',
       },
       {
-        id: 'beginner-series',
-        label: 'Beginner Series',
+        id: 'free-intro-session',
+        label: 'Free Intro Session',
         description:
-          'Never done yoga before? This 4-week foundations series builds confidence, breath, and basic postures.',
-        duration: '4 weeks',
-        price: 'From $49',
+          'Come move, ask questions, and see if we\'re a great fit. A no-pressure 30-minute intro to explore your goals and what\'s possible.',
+        duration: '30 min',
+        price: 'Free',
+      },
+    ],
+  },
+
+  bundle: {
+    label: 'Bundle',
+    eyebrow: 'Nutrition + Strength — Complete Transformation',
+    headline: 'The complete package for a life you love.',
+    subtext:
+      'Pair expert nutrition coaching with progressive strength training for the ultimate sustainable lifestyle transformation. Work hard, eat well, and feel incredible.',
+    cta: 'Get the Full Bundle',
+    palette: {
+      bg: '#F9F5F0',
+      accent: '#C9A84C',
+      highlight: '#8F6E5A',
+      text: '#2C2820',
+      textMuted: '#7A6B62',
+      border: '#E8D8C0',
+      ctaBg: '#2C2820',
+      ctaText: '#F9F5F0',
+    },
+    programs: [
+      {
+        id: '3-month-transformation',
+        label: '3-Month Transformation',
+        description:
+          'A focused 3-month program combining custom nutrition planning and progressive strength training to kick-start your lifestyle reset.',
+        duration: '3 months',
+        price: 'From $699',
+      },
+      {
+        id: '6-month-lifestyle-reset',
+        label: '6-Month Lifestyle Reset',
+        description:
+          'The full experience — six months of evolving nutrition and training programs with bi-weekly check-ins and complete lifestyle integration.',
+        duration: '6 months',
+        price: 'From $1,199',
+      },
+      {
+        id: 'vip-coaching',
+        label: 'VIP Coaching',
+        description:
+          'Nutrition + Strength + unlimited check-ins. Katie\'s most comprehensive offering for clients who want the full white-glove transformation.',
+        duration: 'Ongoing',
+        price: 'From $599/mo',
+      },
+      {
+        id: 'custom-bundle',
+        label: 'Custom Bundle',
+        description:
+          'Not sure which bundle fits? Let\'s build something around you. Reach out and Katie will design a plan for your goals and schedule.',
+        duration: 'Flexible',
+        price: 'Custom pricing',
       },
     ],
   },

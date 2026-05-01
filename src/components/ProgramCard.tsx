@@ -28,23 +28,29 @@ export default function ProgramCard({ program, palette, href, index }: Props) {
       }}
       whileTap={{ scale: 0.985, transition: { duration: 0.1, delay: 0 } }}
     >
-      <Link href={href} className="block h-full">
-        <div
+      <Link
+        href={href}
+        aria-label={`${program.label} — ${program.price}, ${program.duration}. Click to learn more.`}
+        className="block h-full rounded-2xl focus:outline-2 focus:outline-offset-4"
+        style={{ outlineColor: palette.highlight }}
+      >
+        <article
           className="flex h-full flex-col rounded-2xl bg-white p-8 shadow-sm transition-shadow duration-200 hover:shadow-md"
           style={{ borderTop: `3px solid ${palette.highlight}` }}
         >
-          {/* Price badge */}
+          {/* Price badge + duration */}
           <div className="mb-6 flex items-start justify-between gap-4">
             <span
               className="inline-block rounded-full px-3 py-1 text-xs font-medium"
-              style={{
-                backgroundColor: palette.border,
-                color: palette.highlight,
-              }}
+              style={{ backgroundColor: palette.border, color: palette.highlight }}
             >
               {program.price}
             </span>
-            <span className="text-xs" style={{ color: palette.textMuted }}>
+            <span
+              className="text-xs"
+              style={{ color: palette.textMuted }}
+              aria-label={`Duration: ${program.duration}`}
+            >
               {program.duration}
             </span>
           </div>
@@ -65,14 +71,15 @@ export default function ProgramCard({ program, palette, href, index }: Props) {
             {program.description}
           </p>
 
-          {/* Footer */}
+          {/* Footer CTA */}
           <p
             className="mt-8 text-sm font-medium"
             style={{ color: palette.highlight }}
+            aria-hidden="true"
           >
             Get started →
           </p>
-        </div>
+        </article>
       </Link>
     </motion.div>
   )

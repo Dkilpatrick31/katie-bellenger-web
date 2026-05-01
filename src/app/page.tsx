@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { services, type Mode } from '@/data/services'
 
-const MODES: Mode[] = ['nutrition', 'yoga']
+const MODES: Mode[] = ['nutrition', 'strength', 'bundle']
 
 const SPRING = { type: 'spring', stiffness: 320, damping: 32 } as const
 const FADE = { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] } as const
@@ -21,8 +21,10 @@ export default function HomePage() {
       animate={{ backgroundColor: palette.bg }}
       transition={FADE}
     >
-      {/* Mode toggle */}
+      {/* Mode toggle — tablist pattern */}
       <motion.div
+        role="tablist"
+        aria-label="Choose a service"
         className="mb-16 flex items-center rounded-full p-1"
         initial={{ opacity: 0, y: 12 }}
         animate={{ backgroundColor: palette.border, opacity: 1, y: 0 }}
@@ -33,9 +35,16 @@ export default function HomePage() {
           return (
             <button
               key={m}
+              role="tab"
+              aria-selected={isActive}
+              aria-controls="hero-panel"
+              id={`tab-${m}`}
               onClick={() => setMode(m)}
-              className="relative min-w-[136px] rounded-full py-2.5 text-sm font-medium transition-colors duration-300"
-              style={{ color: isActive ? palette.ctaText : palette.textMuted }}
+              className="relative min-w-[100px] rounded-full py-2.5 text-sm font-medium transition-colors duration-300 focus:outline-2 focus:outline-offset-2"
+              style={{
+                color: isActive ? palette.ctaText : palette.textMuted,
+                outlineColor: palette.highlight,
+              }}
             >
               {isActive && (
                 <motion.span
@@ -43,6 +52,7 @@ export default function HomePage() {
                   className="absolute inset-0 rounded-full"
                   animate={{ backgroundColor: palette.ctaBg }}
                   transition={SPRING}
+                  aria-hidden="true"
                 />
               )}
               <span className="relative z-10">{services[m].label}</span>
@@ -51,64 +61,63 @@ export default function HomePage() {
         })}
       </motion.div>
 
-      {/* Animated content block — exits and enters on mode change */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={mode}
-          className="flex max-w-3xl flex-col items-center text-center"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={FADE}
-        >
-          {/* Eyebrow */}
-          <p
-            className="mb-8 text-xs font-medium uppercase tracking-[0.2em]"
-            style={{ color: palette.accent }}
+      {/* Hero panel — aria-live announces content changes to screen readers */}
+      <div
+        id="hero-panel"
+        role="tabpanel"
+        aria-labelledby={`tab-${mode}`}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <AnimatePresence mode="wait">
+          <motion.section
+            key={mode}
+            className="flex max-w-3xl flex-col items-center text-center"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={FADE}
           >
-            {mode === 'nutrition'
-              ? 'Certified Nutritionist'
-              : 'Certified Yoga Instructor'}
-          </p>
+            {/* Eyebrow */}
+            <p
+              className="mb-8 text-xs font-medium uppercase tracking-[0.2em]"
+              style={{ color: palette.accent }}
+            >
+              {config.eyebrow}
+            </p>
 
-          {/* Headline */}
-          <h1
-            className="font-display text-5xl font-light leading-[1.05] tracking-tight sm:text-6xl md:text-7xl lg:text-[5.5rem]"
-            style={{ color: palette.text }}
-          >
-            {config.headline}
-          </h1>
+            {/* Headline */}
+            <h1
+              className="font-display text-5xl font-light leading-[1.05] tracking-tight sm:text-6xl md:text-7xl lg:text-[5.5rem]"
+              style={{ color: palette.text }}
+            >
+              {config.headline}
+            </h1>
 
-          {/* Subtext */}
-          <p
-            className="mt-8 max-w-xl text-lg leading-relaxed sm:text-xl"
-            style={{ color: palette.textMuted }}
-          >
-            {config.subtext}
-          </p>
+            {/* Subtext */}
+            <p
+              className="mt-8 max-w-xl text-lg leading-relaxed sm:text-xl"
+              style={{ color: palette.textMuted }}
+            >
+              {config.subtext}
+            </p>
 
-          {/* CTA */}
-          <Link
-            href={`/${mode}`}
-            className="mt-12 inline-flex items-center rounded-full px-10 py-4 text-base font-medium transition-opacity hover:opacity-90 active:opacity-80"
-            style={{ backgroundColor: palette.ctaBg, color: palette.ctaText }}
-          >
-            {config.cta}
-          </Link>
-
-          {/* Secondary nudge */}
-          <button
-            onClick={() => setMode(mode === 'nutrition' ? 'yoga' : 'nutrition')}
-            className="mt-5 text-sm transition-opacity hover:opacity-70"
-            style={{ color: palette.textMuted }}
-          >
-            Or explore{' '}
-            <span className="underline underline-offset-2">
-              {mode === 'nutrition' ? 'Yoga' : 'Nutrition'} →
-            </span>
-          </button>
-        </motion.div>
-      </AnimatePresence>
+            {/* CTA */}
+            <Link
+              href={`/${mode}`}
+              aria-label={config.cta}
+              className="mt-12 inline-flex items-center rounded-full px-10 py-4 text-base font-medium transition-opacity hover:opacity-90 active:opacity-80 focus:outline-2 focus:outline-offset-2"
+              style={{
+                backgroundColor: palette.ctaBg,
+                color: palette.ctaText,
+                outlineColor: palette.highlight,
+              }}
+            >
+              {config.cta}
+            </Link>
+          </motion.section>
+        </AnimatePresence>
+      </div>
     </motion.div>
   )
 }

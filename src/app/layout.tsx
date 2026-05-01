@@ -18,9 +18,9 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Katie Bellenger — Nutritionist & Yoga Instructor',
+  title: 'Katie Bellenger — Nutritionist & Strength Coach',
   description:
-    'Personalized nutrition coaching and yoga classes for every level. Work with Katie Bellenger to nourish your body and find stillness.',
+    'Personalized nutrition coaching and strength training for a lifestyle you love. Work with Katie Bellenger to eat well, train smart, and feel incredible.',
 }
 
 export default function RootLayout({
@@ -34,8 +34,15 @@ export default function RootLayout({
       className={`${cormorantGaramond.variable} ${dmSans.variable} antialiased`}
     >
       <body className="min-h-screen bg-white font-sans antialiased">
+        {/* Skip-to-main-content for keyboard and screen reader users */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-stone-900 focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white focus:outline-2 focus:outline-offset-2 focus:outline-stone-900"
+        >
+          Skip to main content
+        </a>
         <Nav />
-        <main>{children}</main>
+        <main id="main-content" tabIndex={-1}>{children}</main>
       </body>
     </html>
   )

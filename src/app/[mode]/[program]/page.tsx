@@ -42,28 +42,31 @@ export default async function ProgramPage({ params }: Props) {
       <div className="mx-auto max-w-6xl px-6 py-16">
 
         {/* Breadcrumb */}
-        <Link
-          href={`/${mode}`}
-          className="inline-flex items-center gap-1.5 text-sm transition-opacity hover:opacity-70"
-          style={{ color: palette.textMuted }}
-        >
-          <span>←</span>
-          <span>{config.label} programs</span>
-        </Link>
+        <nav aria-label="Breadcrumb">
+          <Link
+            href={`/${mode}`}
+            className="inline-flex items-center gap-1.5 text-sm transition-opacity hover:opacity-70 focus:outline-2 focus:outline-offset-2"
+            style={{ color: palette.textMuted, outlineColor: palette.highlight }}
+          >
+            <span aria-hidden="true">←</span>
+            <span>{config.label} programs</span>
+          </Link>
+        </nav>
 
         {/* Two-column layout */}
         <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-5 lg:items-start lg:gap-16">
 
           {/* Left: program details */}
-          <div className="lg:col-span-3 lg:sticky lg:top-28">
+          <article className="lg:col-span-3 lg:sticky lg:top-28" aria-labelledby="program-heading">
             <p
               className="mb-5 text-xs font-medium uppercase tracking-[0.2em]"
               style={{ color: palette.accent }}
             >
-              {config.label}
+              {config.eyebrow}
             </p>
 
             <h1
+              id="program-heading"
               className="font-display text-5xl font-light leading-[1.05] tracking-tight sm:text-6xl"
               style={{ color: palette.text }}
             >
@@ -71,13 +74,10 @@ export default async function ProgramPage({ params }: Props) {
             </h1>
 
             {/* Badges */}
-            <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="mt-6 flex flex-wrap items-center gap-3" aria-label="Program details">
               <span
                 className="rounded-full px-4 py-1.5 text-sm font-medium"
-                style={{
-                  backgroundColor: palette.border,
-                  color: palette.highlight,
-                }}
+                style={{ backgroundColor: palette.border, color: palette.highlight }}
               >
                 {program.price}
               </span>
@@ -97,18 +97,20 @@ export default async function ProgramPage({ params }: Props) {
               {program.description}
             </p>
 
-            {/* Divider + reassurance */}
-            <div
+            {/* What happens next */}
+            <section
               className="mt-10 border-t pt-8"
               style={{ borderColor: palette.border }}
+              aria-labelledby="next-steps-heading"
             >
-              <p
+              <h2
+                id="next-steps-heading"
                 className="text-sm font-medium"
                 style={{ color: palette.text }}
               >
                 What happens next
-              </p>
-              <ol className="mt-4 flex flex-col gap-3">
+              </h2>
+              <ol className="mt-4 flex flex-col gap-3" aria-label="Next steps after signing up">
                 {[
                   'Fill out the form — takes less than a minute.',
                   'Katie reviews your details and reaches out within 24 hours.',
@@ -121,10 +123,8 @@ export default async function ProgramPage({ params }: Props) {
                   >
                     <span
                       className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-medium"
-                      style={{
-                        backgroundColor: palette.border,
-                        color: palette.highlight,
-                      }}
+                      style={{ backgroundColor: palette.border, color: palette.highlight }}
+                      aria-hidden="true"
                     >
                       {i + 1}
                     </span>
@@ -132,13 +132,14 @@ export default async function ProgramPage({ params }: Props) {
                   </li>
                 ))}
               </ol>
-            </div>
-          </div>
+            </section>
+          </article>
 
           {/* Right: signup form */}
-          <div className="lg:col-span-2">
+          <section className="lg:col-span-2" aria-labelledby="form-heading">
             <div className="rounded-3xl bg-white p-8 shadow-sm">
               <h2
+                id="form-heading"
                 className="font-display text-2xl font-light"
                 style={{ color: palette.text }}
               >
@@ -154,6 +155,7 @@ export default async function ProgramPage({ params }: Props) {
               <div
                 className="my-6 h-px"
                 style={{ backgroundColor: palette.border }}
+                role="separator"
               />
 
               <SignupForm
@@ -162,7 +164,7 @@ export default async function ProgramPage({ params }: Props) {
                 selectedProgramId={program.id}
               />
             </div>
-          </div>
+          </section>
 
         </div>
       </div>

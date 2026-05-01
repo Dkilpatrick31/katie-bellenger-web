@@ -25,7 +25,9 @@ const FADE = { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } as const
 export default function SignupForm({ palette, programs, selectedProgramId }: Props) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [programId, setProgramId] = useState(selectedProgramId)
+  const [goal, setGoal] = useState('')
   const [source, setSource] = useState('')
   const [focused, setFocused] = useState<string | null>(null)
   const [status, setStatus] = useState<Status>('idle')
@@ -39,7 +41,7 @@ export default function SignupForm({ palette, programs, selectedProgramId }: Pro
     }
   }
 
-  function focus(id: string) {
+  function focusHandlers(id: string) {
     return {
       onFocus: () => setFocused(id),
       onBlur: () => setFocused(null),
@@ -55,11 +57,17 @@ export default function SignupForm({ palette, programs, selectedProgramId }: Pro
 
   const firstName = name.split(' ')[0]
 
+  const inputBase =
+    'w-full rounded-xl border px-4 py-3 text-sm text-stone-800 transition-all duration-150 placeholder:text-stone-300 focus:outline-2 focus:outline-offset-2'
+
   return (
     <AnimatePresence mode="wait">
       {status === 'success' ? (
         <motion.div
           key="success"
+          role="status"
+          aria-live="assertive"
+          aria-atomic="true"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={FADE}
@@ -68,6 +76,7 @@ export default function SignupForm({ palette, programs, selectedProgramId }: Pro
           <div
             className="mb-6 flex h-14 w-14 items-center justify-center rounded-full"
             style={{ backgroundColor: palette.border }}
+            aria-hidden="true"
           >
             <svg
               width="24"
@@ -101,68 +110,103 @@ export default function SignupForm({ palette, programs, selectedProgramId }: Pro
         <motion.form
           key="form"
           onSubmit={handleSubmit}
+          aria-label="Program inquiry form"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={FADE}
           className="flex flex-col gap-5"
+          noValidate
         >
-          {/* Name */}
-          <label className="flex flex-col gap-1.5">
-            <span
+          {/* Full name */}
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="signup-name"
               className="text-xs font-medium uppercase tracking-[0.12em]"
               style={{ color: palette.textMuted }}
             >
-              Full name
-            </span>
+              Full name <span aria-hidden="true">*</span>
+            </label>
             <input
+              id="signup-name"
               type="text"
               required
+              autoComplete="name"
               placeholder="Your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl border px-4 py-3 text-sm text-stone-800 transition-all duration-150 placeholder:text-stone-300"
-              style={fieldStyle('name')}
-              {...focus('name')}
+              className={inputBase}
+              style={{ ...fieldStyle('name'), outlineColor: palette.highlight }}
+              {...focusHandlers('name')}
             />
-          </label>
+          </div>
 
           {/* Email */}
-          <label className="flex flex-col gap-1.5">
-            <span
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="signup-email"
               className="text-xs font-medium uppercase tracking-[0.12em]"
               style={{ color: palette.textMuted }}
             >
-              Email address
-            </span>
+              Email address <span aria-hidden="true">*</span>
+            </label>
             <input
+              id="signup-email"
               type="email"
               required
+              autoComplete="email"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border px-4 py-3 text-sm text-stone-800 transition-all duration-150 placeholder:text-stone-300"
-              style={fieldStyle('email')}
-              {...focus('email')}
+              className={inputBase}
+              style={{ ...fieldStyle('email'), outlineColor: palette.highlight }}
+              {...focusHandlers('email')}
             />
-          </label>
+          </div>
 
-          {/* Program interest */}
-          <label className="flex flex-col gap-1.5">
-            <span
+          {/* Phone (optional) */}
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="signup-phone"
               className="text-xs font-medium uppercase tracking-[0.12em]"
               style={{ color: palette.textMuted }}
             >
-              Program interest
-            </span>
+              Phone{' '}
+              <span className="normal-case tracking-normal text-stone-400">
+                (optional)
+              </span>
+            </label>
+            <input
+              id="signup-phone"
+              type="tel"
+              autoComplete="tel"
+              placeholder="+1 (555) 000-0000"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className={inputBase}
+              style={{ ...fieldStyle('phone'), outlineColor: palette.highlight }}
+              {...focusHandlers('phone')}
+            />
+          </div>
+
+          {/* Program interest */}
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="signup-program"
+              className="text-xs font-medium uppercase tracking-[0.12em]"
+              style={{ color: palette.textMuted }}
+            >
+              Program interest <span aria-hidden="true">*</span>
+            </label>
             <div className="relative">
               <select
+                id="signup-program"
                 required
                 value={programId}
                 onChange={(e) => setProgramId(e.target.value)}
-                className="w-full appearance-none rounded-xl border bg-white px-4 py-3 pr-10 text-sm text-stone-800 transition-all duration-150"
-                style={fieldStyle('program')}
-                {...focus('program')}
+                className={`${inputBase} appearance-none bg-white pr-10`}
+                style={{ ...fieldStyle('program'), outlineColor: palette.highlight }}
+                {...focusHandlers('program')}
               >
                 {programs.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -175,27 +219,52 @@ export default function SignupForm({ palette, programs, selectedProgramId }: Pro
                 color={palette.textMuted}
               />
             </div>
-          </label>
+          </div>
 
-          {/* How did you find Katie */}
-          <label className="flex flex-col gap-1.5">
-            <span
+          {/* Goal */}
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="signup-goal"
               className="text-xs font-medium uppercase tracking-[0.12em]"
               style={{ color: palette.textMuted }}
             >
-              How did you find Katie?
-            </span>
+              Your main goal <span aria-hidden="true">*</span>
+            </label>
+            <textarea
+              id="signup-goal"
+              required
+              rows={3}
+              placeholder="Tell Katie what you're working toward — weight loss, building strength, more energy, confidence…"
+              value={goal}
+              onChange={(e) => setGoal(e.target.value)}
+              className={`${inputBase} resize-none`}
+              style={{ ...fieldStyle('goal'), outlineColor: palette.highlight }}
+              {...focusHandlers('goal')}
+            />
+          </div>
+
+          {/* How did you find Katie */}
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="signup-source"
+              className="text-xs font-medium uppercase tracking-[0.12em]"
+              style={{ color: palette.textMuted }}
+            >
+              How did you find Katie? <span aria-hidden="true">*</span>
+            </label>
             <div className="relative">
               <select
+                id="signup-source"
                 required
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
-                className="w-full appearance-none rounded-xl border bg-white px-4 py-3 pr-10 text-sm transition-all duration-150"
+                className={`${inputBase} appearance-none bg-white pr-10`}
                 style={{
                   ...fieldStyle('source'),
+                  outlineColor: palette.highlight,
                   color: source ? '#1c1917' : '#c4b5a8',
                 }}
-                {...focus('source')}
+                {...focusHandlers('source')}
               >
                 <option value="" disabled>
                   Select one…
@@ -211,14 +280,34 @@ export default function SignupForm({ palette, programs, selectedProgramId }: Pro
                 color={palette.textMuted}
               />
             </div>
-          </label>
+          </div>
+
+          {/* Required fields note */}
+          <p
+            id="required-note"
+            className="text-xs"
+            style={{ color: palette.textMuted }}
+          >
+            Fields marked <span aria-hidden="true">*</span>
+            <span className="sr-only">with an asterisk</span> are required.
+          </p>
 
           {/* Submit */}
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="mt-2 w-full rounded-full py-3.5 text-sm font-medium transition-opacity hover:opacity-90 active:opacity-80 disabled:opacity-60"
-            style={{ backgroundColor: palette.ctaBg, color: palette.ctaText }}
+            aria-label={
+              status === 'submitting'
+                ? 'Sending your application…'
+                : 'Send my application to Katie'
+            }
+            aria-busy={status === 'submitting'}
+            className="mt-2 w-full rounded-full py-3.5 text-sm font-medium transition-opacity hover:opacity-90 active:opacity-80 disabled:cursor-not-allowed disabled:opacity-60 focus:outline-2 focus:outline-offset-2"
+            style={{
+              backgroundColor: palette.ctaBg,
+              color: palette.ctaText,
+              outlineColor: palette.highlight,
+            }}
           >
             {status === 'submitting' ? 'Sending…' : 'Send my application'}
           </button>
@@ -232,13 +321,7 @@ export default function SignupForm({ palette, programs, selectedProgramId }: Pro
   )
 }
 
-function ChevronDown({
-  color,
-  className,
-}: {
-  color: string
-  className?: string
-}) {
+function ChevronDown({ color, className }: { color: string; className?: string }) {
   return (
     <svg
       className={className}
@@ -250,6 +333,7 @@ function ChevronDown({
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden="true"
     >
       <polyline points="6 9 12 15 18 9" />
     </svg>

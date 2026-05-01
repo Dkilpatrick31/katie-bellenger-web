@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { services, type Mode } from '@/data/services'
 import ProgramCard from '@/components/ProgramCard'
 
@@ -9,7 +10,8 @@ function assertValidMode(value: string): asserts value is Mode {
 
 const selectorHeadlines: Record<Mode, string> = {
   nutrition: 'Build the plan that fits your life.',
-  yoga: 'Find the practice that calls to you.',
+  strength: 'Build the strength that changes everything.',
+  bundle: 'The complete transformation starts here.',
 }
 
 export function generateStaticParams() {
@@ -37,17 +39,33 @@ export default async function ModePage({ params }: Props) {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: palette.bg }}>
+
       {/* Page hero */}
-      <section className="mx-auto max-w-6xl px-6 pb-16 pt-20">
+      <section
+        className="mx-auto max-w-6xl px-6 pb-16 pt-20"
+        aria-labelledby="mode-heading"
+      >
+        {/* Breadcrumb */}
+        <Link
+          href="/"
+          className="mb-8 inline-flex items-center gap-1.5 text-sm transition-opacity hover:opacity-70 focus:outline-2 focus:outline-offset-2"
+          style={{ color: palette.textMuted, outlineColor: palette.highlight }}
+          aria-label="Back to home"
+        >
+          <span aria-hidden="true">←</span>
+          <span>Home</span>
+        </Link>
+
         <p
-          className="mb-6 text-xs font-medium uppercase tracking-[0.2em]"
+          className="mb-6 mt-6 text-xs font-medium uppercase tracking-[0.2em]"
           style={{ color: palette.accent }}
         >
-          {config.label}
+          {config.eyebrow}
         </p>
 
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <h1
+            id="mode-heading"
             className="font-display text-5xl font-light leading-[1.05] tracking-tight sm:text-6xl md:max-w-lg"
             style={{ color: palette.text }}
           >
@@ -66,14 +84,19 @@ export default async function ModePage({ params }: Props) {
         <div
           className="mt-12 h-px w-full"
           style={{ backgroundColor: palette.border }}
+          role="separator"
         />
       </section>
 
       {/* Programs grid */}
-      <section className="mx-auto max-w-6xl px-6 pb-28">
+      <section
+        className="mx-auto max-w-6xl px-6 pb-28"
+        aria-label={`${config.label} programs`}
+      >
         <p
           className="mb-8 text-xs font-medium uppercase tracking-[0.2em]"
           style={{ color: palette.textMuted }}
+          aria-live="polite"
         >
           Programs — {config.programs.length} options
         </p>
