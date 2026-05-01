@@ -27,7 +27,7 @@ export default function Nav() {
         <Link
           href="/"
           aria-label="Katie Bellenger — home"
-          className="font-display text-xl tracking-wide text-stone-800 transition-opacity hover:opacity-70 focus:outline-2 focus:outline-offset-2 focus:outline-stone-800"
+          className="font-display text-base md:text-xl tracking-wide text-stone-800 transition-opacity hover:opacity-70 focus:outline-2 focus:outline-offset-2 focus:outline-stone-800"
         >
           Katie Bellenger
         </Link>
