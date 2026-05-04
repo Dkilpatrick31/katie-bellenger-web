@@ -14,6 +14,12 @@ const selectorHeadlines: Record<Mode, string> = {
   bundle: 'The complete transformation starts here.',
 }
 
+const modeSeoTitles: Record<Mode, string> = {
+  nutrition: 'Nutrition Coaching',
+  strength: 'Strength Training',
+  bundle: 'Nutrition + Strength Bundle',
+}
+
 export function generateStaticParams() {
   return Object.keys(services).map((mode) => ({ mode }))
 }
@@ -24,9 +30,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { mode } = await params
   if (!(mode in services)) return {}
   const config = services[mode as Mode]
+  const title = modeSeoTitles[mode as Mode]
   return {
-    title: `${config.label} Programs | Katie Bellenger`,
+    title,
     description: config.subtext,
+    alternates: { canonical: `/${mode}` },
+    openGraph: {
+      title: `${title} | Katie Bellenger`,
+      description: config.subtext,
+      url: `https://trainwithkatie.fit/${mode}`,
+    },
   }
 }
 

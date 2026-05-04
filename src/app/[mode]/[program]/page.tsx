@@ -23,8 +23,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const program = config.programs.find((p) => p.id === programId)
   if (!program) return {}
   return {
-    title: `${program.label} | Katie Bellenger`,
+    title: program.label,
     description: program.description,
+    alternates: { canonical: `/${mode}/${programId}` },
+    openGraph: {
+      title: `${program.label} | Katie Bellenger`,
+      description: program.description,
+      url: `https://trainwithkatie.fit/${mode}/${programId}`,
+    },
   }
 }
 
