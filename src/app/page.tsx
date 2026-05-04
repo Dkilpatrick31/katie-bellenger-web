@@ -17,7 +17,7 @@ export default function HomePage() {
 
   return (
     <motion.div
-      className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center px-6 py-20"
+      className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center px-6 pt-8 pb-20 md:py-20"
       animate={{ backgroundColor: palette.bg }}
       transition={FADE}
     >

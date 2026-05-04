@@ -35,7 +35,7 @@ export const KATIE_BIO =
 export const services: Record<Mode, ModeConfig> = {
   nutrition: {
     label: 'Nutrition',
-    eyebrow: 'Certified Nutritionist',
+    eyebrow: 'Certified Nutrition Coach',
     headline: 'Nourish your body. Fuel your life.',
     subtext:
       'Sustainable eating habits built around your lifestyle — not a crash diet. Real food, real results, and a plan you\'ll actually stick to.',

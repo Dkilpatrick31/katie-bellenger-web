@@ -80,11 +80,6 @@ function notificationHtml(body: Body, programLabel: string, modeLabel: string) {
 }
 
 export async function POST(request: Request) {
-  if (!process.env.KATIE_EMAIL) {
-    console.error('KATIE_EMAIL env var is not set')
-    return Response.json({ error: 'Server configuration error' }, { status: 500 })
-  }
-
   let body: Body
   try {
     body = await request.json()
@@ -105,7 +100,7 @@ export async function POST(request: Request) {
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
       from: process.env.RESEND_FROM ?? 'onboarding@resend.dev',
-      to: process.env.KATIE_EMAIL,
+      to: 'kk@trainwithkatie.fit',
       subject: `New inquiry: ${name} — ${programLabel}`,
       html: notificationHtml(body, programLabel, modeLabel),
     })
