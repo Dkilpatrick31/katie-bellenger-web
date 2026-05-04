@@ -12,7 +12,7 @@ const SOURCES = [
   'Other',
 ]
 
-type Status = 'idle' | 'submitting' | 'success'
+type Status = 'idle' | 'submitting' | 'success' | 'error'
 
 type Props = {
   palette: Palette
@@ -51,8 +51,17 @@ export default function SignupForm({ palette, programs, selectedProgramId }: Pro
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setStatus('submitting')
-    await new Promise((r) => setTimeout(r, 1000))
-    setStatus('success')
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, programId, goal, source }),
+      })
+      if (!res.ok) throw new Error('Request failed')
+      setStatus('success')
+    } catch {
+      setStatus('error')
+    }
   }
 
   const firstName = name.split(' ')[0]
@@ -291,6 +300,13 @@ export default function SignupForm({ palette, programs, selectedProgramId }: Pro
             Fields marked <span aria-hidden="true">*</span>
             <span className="sr-only">with an asterisk</span> are required.
           </p>
+
+          {/* Error message */}
+          {status === 'error' && (
+            <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              Something went wrong — please try again or email Katie directly.
+            </p>
+          )}
 
           {/* Submit */}
           <button
