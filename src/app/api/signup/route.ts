@@ -1,8 +1,6 @@
 import { Resend } from 'resend'
 import { services } from '@/data/services'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 type Body = {
   name: string
   email: string
@@ -104,6 +102,7 @@ export async function POST(request: Request) {
   const modeLabel = match?.config.label ?? ''
 
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
       from: process.env.RESEND_FROM ?? 'onboarding@resend.dev',
       to: process.env.KATIE_EMAIL,
